@@ -5,7 +5,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
-[assembly: MelonInfo(typeof(freakAssist.Main), "freakAssist", "1.0.0", "freakycheesy", null)]
+[assembly: MelonInfo(typeof(freakAssist.Main), "freakAssist", "1.0.0", "freakycheesy", "https://github.com/freakycheesy/freakAssist.git")]
 [assembly: MelonGame("Stress Level Zero", "BONELAB")]
 
 namespace freakAssist
@@ -39,8 +39,8 @@ namespace freakAssist
                 var json = www.downloadHandler.text;
                 MelonLogger.Msg(www.downloadHandler.text);
                 Mods = JsonConvert.DeserializeObject<Dictionary<string, ModMetadata>>(json);
-                CreateMods();
             }
+            CreateMods();
         }
         private void CreateMods() {
             ModsPage.RemoveAll();
