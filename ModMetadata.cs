@@ -12,6 +12,7 @@ namespace freakAssist {
         public string ModLocation;
         public string IconLocation;
         public string Description;
+        public string Link;
 
         public void DownloadMod(string fileName, string url) {
             var fileUrl = url + ModLocation;

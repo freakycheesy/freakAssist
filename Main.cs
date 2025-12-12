@@ -60,6 +60,7 @@ namespace freakAssist
                 modPage.CreateFunction($"Version: {mod.Value.Version}", Color.green, null);
                 modPage.CreateFunction($"Author: {mod.Value.Author}", Color.green, null);
                 modPage.CreateFunction($"Description: {mod.Value.Description}", Color.green, null);
+                modPage.CreateFunction($"Link: {mod.Value.Link}", Color.green, ()=>Application.OpenURL(mod.Value.Link));
                 modPage.CreateFunction("Download", Color.green, ()=>mod.Value.DownloadMod(mod.Key + ".dll", urlPath));
             }
         }
