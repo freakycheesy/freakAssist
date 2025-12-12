@@ -4,6 +4,8 @@ using MelonLoader;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
+using MelonLoader.Utils;
+using BoneLib.Notifications;
 
 [assembly: MelonInfo(typeof(freakAssist.Main), "freakAssist", "1.0.0", "freakycheesy", "https://github.com/freakycheesy/freakAssist.git")]
 [assembly: MelonGame("Stress Level Zero", "BONELAB")]
@@ -28,24 +30,31 @@ namespace freakAssist
         }
 
         private IEnumerator RequestMods() {
+            Notification noti = new();
+            noti.ShowTitleOnPopup = true;
+            noti.Title = "FreakAssist";
+            noti.Message = "Requesting Mods List";
+            Notifier.Send(noti);
             UnityWebRequest www = UnityWebRequest.Get($"{urlPath}mods.json");
             yield return www.SendWebRequest();
 
             if (www.result != UnityWebRequest.Result.Success) {
+                noti.Message = "ERROR: " + www.error;
                 MelonLogger.Error(www.error);
             }
             else {
-                // Show results as text
+                noti.Message = "RECEIVED MODS LIST";
                 var json = www.downloadHandler.text;
                 MelonLogger.Msg(www.downloadHandler.text);
                 Mods = JsonConvert.DeserializeObject<Dictionary<string, ModMetadata>>(json);
             }
+            Notifier.Send(noti);
             CreateMods();
         }
         private void CreateMods() {
             ModsPage.RemoveAll();
             foreach (var mod in Mods) {
-                if (mod.Value.Game == Application.productName)
+                if (mod.Value.Game != Application.productName)
                     continue;
                 var modPage = ModsPage.CreatePage(mod.Key, Color.green);
                 modPage.CreateFunction($"Version: {mod.Value.Version}", Color.green, null);
